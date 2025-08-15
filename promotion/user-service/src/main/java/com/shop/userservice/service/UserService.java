@@ -24,7 +24,7 @@ public class UserService {
 
     @Transactional
     public User createUser(String email, String password, String name) {
-        if (userRepository.findByEmail(email).isEmpty()) {
+        if (userRepository.findByEmail(email).isPresent()) {
             throw new DuplicateUserException("User already exists with email: " + email);
         }
 
