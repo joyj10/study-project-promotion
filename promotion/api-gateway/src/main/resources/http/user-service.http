@@ -1,0 +1,40 @@
+### User Signup
+POST http://localhost:8000/api/v1/users/signup
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "password123",
+  "name": "Test User"
+}
+
+### User Login
+POST http://localhost:8000/api/v1/users/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+> {%
+    client.global.set("auth_token", response.body.token);
+%}
+
+### Validate Token
+POST http://localhost:8000/api/v1/users/token/validation
+Content-Type: application/json
+
+{
+  "token": "{{auth_token}}"
+}
+
+### Get User Profile (Protected)
+GET http://localhost:8000/api/v1/users/me
+Authorization: Bearer {{auth_token}}
+
+### User Health check
+GET http://localhost:8004/actuator/health
+
+### check
+GET http://localhost:8000/actuator/gateway/routes

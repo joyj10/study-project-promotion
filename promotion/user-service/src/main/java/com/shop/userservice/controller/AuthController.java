@@ -34,11 +34,12 @@ public class AuthController {
         );
     }
 
-    @PostMapping("/validate-token")
+    @PostMapping("/token/validation")
     public ResponseEntity<UserDto.TokenResponse> validateToken(@RequestBody UserDto.TokenRequest request) {
         Claims claims = jwtService.validateToken(request.getToken());
         return ResponseEntity.ok(
                 UserDto.TokenResponse.builder()
+                        .userId(claims.get("userId", Long.class))
                         .email(claims.getSubject())
                         .valid(true)
                         .role(claims.get("role", String.class))
@@ -46,7 +47,7 @@ public class AuthController {
         );
     }
 
-    @PostMapping("/refresh-token")
+    @PostMapping("/token/refresh")
     public ResponseEntity<Map<String, String>> refreshToken(@RequestBody UserDto.TokenRequest tokenRequest) {
         String newToken = jwtService.refreshToken(tokenRequest.getToken());
         return ResponseEntity.ok(Collections.singletonMap("token", newToken));

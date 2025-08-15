@@ -82,6 +82,7 @@ public class UserDto {
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class TokenResponse {
+        private Long userId;
         private String email;
         private boolean valid;
         private String role;

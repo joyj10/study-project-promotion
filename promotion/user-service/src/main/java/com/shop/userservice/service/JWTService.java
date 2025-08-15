@@ -29,6 +29,7 @@ public class JWTService {
         return Jwts.builder()
                 .subject(user.getEmail())
                 .claim("role", "USER")
+                .claim("userId", user.getId())
                 .issuedAt(new Date(currentTimeMillis))
                 .expiration(new Date(currentTimeMillis + 3600000))  // 토근 1시간 동안 유효
                 .signWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)))

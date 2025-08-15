@@ -37,14 +37,14 @@ public class UserController {
 
     @PutMapping("/me")
     public ResponseEntity<UserDto.Response> updateProfile(@RequestHeader(X_USER_ID) Long userId,
-                                           @RequestBody UserDto.UpdateRequest request) {
+                                                          @RequestBody UserDto.UpdateRequest request) {
         User user = userService.updateUser(userId, request.getName());
         return ResponseEntity.ok(UserDto.Response.from(user));
     }
 
     @PostMapping("/me/password")
     public ResponseEntity<Void> changePassword(@RequestHeader(X_USER_ID) Long userId,
-                                            @RequestBody UserDto.PasswordChangeRequest request) {
+                                               @RequestBody UserDto.PasswordChangeRequest request) {
         userService.changePassword(userId, request.getCurrentPassword(), request.getNewPassword());
         return ResponseEntity.ok().build();
     }
