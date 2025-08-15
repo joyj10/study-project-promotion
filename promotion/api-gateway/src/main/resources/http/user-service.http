@@ -1,3 +1,6 @@
+### User Health check
+GET http://localhost:8004/actuator/health
+
 ### User Signup
 POST http://localhost:8000/api/v1/users/signup
 Content-Type: application/json
@@ -9,7 +12,7 @@ Content-Type: application/json
 }
 
 ### User Login
-POST http://localhost:8000/api/v1/users/login
+POST http://localhost:8000/api/v1/auth/login
 Content-Type: application/json
 
 {
@@ -22,7 +25,7 @@ Content-Type: application/json
 %}
 
 ### Validate Token
-POST http://localhost:8000/api/v1/users/token/validation
+POST http://localhost:8000/api/v1/auth/token/validation
 Content-Type: application/json
 
 {
@@ -32,9 +35,3 @@ Content-Type: application/json
 ### Get User Profile (Protected)
 GET http://localhost:8000/api/v1/users/me
 Authorization: Bearer {{auth_token}}
-
-### User Health check
-GET http://localhost:8004/actuator/health
-
-### check
-GET http://localhost:8000/actuator/gateway/routes

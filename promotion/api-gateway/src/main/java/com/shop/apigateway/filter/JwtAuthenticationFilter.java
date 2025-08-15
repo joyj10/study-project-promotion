@@ -54,7 +54,7 @@ public class JwtAuthenticationFilter extends AbstractGatewayFilterFactory<JwtAut
         Map<String, String> requestBody = Map.of("token", token);
 
         return webClient.post()
-                .uri("/api/v1/users/token/validation")
+                .uri("/api/v1/auth/token/validation")
                 .bodyValue(requestBody)
                 .header("Content-Type", "application/json")
                 .retrieve()
