@@ -4,26 +4,60 @@ server:
 spring:
   application:
     name: api-gateway
-#  data:
-#    redis:
-#      host: localhost
-#      port: 6379
+  data:
+    redis:
+      host: localhost
+      port: 6379
   cloud:
     gateway:
       server:
         webflux:
+          default-filters:    # 모든 라우트 기본 적용 필터 설정
+            - name: RequestRateLimiter                  # 모든 라우트에 기본으로 적용할 필터 설정
+              args:
+                redis-rate-limiter.replenishRate: 10    # 초당 허용되는 토큰 수 (1초에 1회 요청 허용)
+                redis-rate-limiter.burstCapacity: 20    # 순간적으로 허용되는 최대 요청 수
+                redis-rate-limiter.requestedTokens: 1   # 요청 시 사용되는 토큰 수 (한 요청 당 1토큰 차감)
+                key-resolver: "#{@userKeyResolver}"     # 요청자 식별자를 결정하는 Bean 참조
           routes:
             - id: public-user-service
               uri: lb://USER-SERVICE
               predicates:
                 - Path=/api/v1/auth/signup, /api/v1/auth/login, /api/v1/auth/token/validation, /api/v1/auth/refresh-token
-              filters: []
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: userServiceBreaker
+                    fallbackUri: forward:/fallback/users
             - id: user-service
               uri: lb://USER-SERVICE
               predicates:
                 - Path=/api/v1/users/**
               filters:
+                - name: CircuitBreaker
+                  args:
+                    name: userServiceBreaker
+                    fallbackUri: forward:/fallback/users
                 - name: JwtAuthenticationFilter
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      authCircuitBreaker:
+        registerHealthIndicator: true
+        slidingWindowSize: 5            # 서킷 브레이커가 고려할 최근 호출 수
+        minimumNumberOfCalls: 10        # 최소 호출 횟수, 이 수를 넘어야 서킷 브레이커의 상태가 변경됨
+        permittedNumberOfCallsInHalfOpenState: 10 # 반-열린 상태에서 허용되는 호출 수
+        automaticTransitionFromOpenToHalfOpenEnabled: true # 서킷 브레이커가 자동으로 반-열린 상태로 전환되는지 여부
+        waitDurationInOpenState: 5000   # 서킷 브레이커가 열린 상태로 유지되는 시간
+        failureRateThreshold: 50        # 실패율 기준, 이 비율을 초과하는 실패가 발생하면 서킷 브레이커가 열립니다
+        eventConsumerBufferSize: 10
+        record-exceptions:
+          - java.util.concurrent.TimeoutException
+          - org.springframework.cloud.gateway.support.NotFoundException
+          - io.github.resilience4j.circuitbreaker.CallNotPermittedException
+
+
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG
