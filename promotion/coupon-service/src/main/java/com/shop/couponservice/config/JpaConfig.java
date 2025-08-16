@@ -1,4 +1,4 @@
-package com.shop.userservice.config;
+package com.shop.couponservice.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
