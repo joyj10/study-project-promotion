@@ -1,4 +1,4 @@
-package com.shop.couponservice.controller.v1;
+package com.shop.couponservice.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
