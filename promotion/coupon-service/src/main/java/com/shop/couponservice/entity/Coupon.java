@@ -73,6 +73,10 @@ public class Coupon {
         return now.isBefore(couponPolicy.getStartTime()) || now.isAfter(couponPolicy.getEndTime());
     }
 
+    public boolean isUsed() {
+        return this.status == Status.USED;
+    }
+
     public void cancel() {
         if (status != Status.USED) {
             throw new IllegalStateException("사용되지 않은 쿠폰입니다.");
