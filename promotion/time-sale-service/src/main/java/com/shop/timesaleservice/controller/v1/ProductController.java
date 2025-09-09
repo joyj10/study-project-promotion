@@ -1,4 +1,4 @@
-package com.shop.timesaleservice.controller;
+package com.shop.timesaleservice.controller.v1;
 
 
 import com.shop.timesaleservice.domain.Product;
