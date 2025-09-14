@@ -40,6 +40,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // Redis
+    implementation 'org.redisson:redisson-spring-boot-starter:3.23.5'
 }
 
 dependencyManagement {
