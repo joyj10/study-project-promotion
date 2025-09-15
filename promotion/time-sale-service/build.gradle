@@ -43,6 +43,9 @@ dependencies {
 
     // Redis
     implementation 'org.redisson:redisson-spring-boot-starter:3.23.5'
+
+    // Kafka
+    implementation 'org.springframework.kafka:spring-kafka'
 }
 
 dependencyManagement {

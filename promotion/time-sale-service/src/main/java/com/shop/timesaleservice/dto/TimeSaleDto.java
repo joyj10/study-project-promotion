@@ -93,4 +93,24 @@ public class TimeSaleDto {
         }
     }
 
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AsyncPurchaseResponse {
+        private String requestId;
+        private String status;
+        private Integer queuePosition;
+        private Long totalWaiting;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PurchaseResponse2 {
+        private String requestId;
+        private String status;
+    }
+
 }
